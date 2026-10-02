@@ -3,10 +3,13 @@ import type { LoginCredentials, LoginResponse, Order, PaginatedResponse, User } 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
+type AuthFailureHandler = () => void;
+
 class ApiClient {
   private client: AxiosInstance;
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
+  private onAuthFailure: AuthFailureHandler | null = null;
 
   constructor() {
     this.client = axios.create({
@@ -42,14 +45,14 @@ class ApiClient {
             return this.client(originalRequest);
           } catch {
             this.clearTokens();
-            window.location.href = '/login';
+            this.triggerAuthFailure();
             return Promise.reject(error);
           }
         }
 
         if (error.response?.status === 401) {
           this.clearTokens();
-          window.location.href = '/login';
+          this.triggerAuthFailure();
         }
 
         return Promise.reject(error);
@@ -57,6 +60,16 @@ class ApiClient {
     );
 
     this.loadTokensFromStorage();
+  }
+
+  setAuthFailureHandler(handler: AuthFailureHandler) {
+    this.onAuthFailure = handler;
+  }
+
+  private triggerAuthFailure() {
+    if (this.onAuthFailure) {
+      this.onAuthFailure();
+    }
   }
 
   private loadTokensFromStorage() {

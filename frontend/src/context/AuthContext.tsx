@@ -23,6 +23,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { data: user, isLoading: meLoading, error, refetch } = useMe(isAuthenticated);
 
   useEffect(() => {
+    api.setAuthFailureHandler(() => {
+      navigate('/login', { replace: true });
+    });
+  }, [navigate]);
+
+  useEffect(() => {
     if (!isAuthenticated) {
       setIsLoading(false);
       return;

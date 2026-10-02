@@ -10,7 +10,12 @@ COPY package*.json ./
 RUN npm ci
 
 # Copy source code
-COPY . .
+COPY src ./src
+COPY index.html ./
+COPY vite.config.ts ./
+COPY tsconfig.json ./
+COPY tsconfig.node.json ./
+COPY tailwind.config.js ./
 
 # Build the application
 ARG VITE_API_BASE_URL=/api/v1
@@ -31,3 +36,6 @@ EXPOSE 80
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
+
+
+

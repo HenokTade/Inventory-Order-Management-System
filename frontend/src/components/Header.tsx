@@ -1,5 +1,7 @@
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Bell, Search, Menu, User, ChevronDown } from 'lucide-react';
+import { Bell, Search, Menu, User, ChevronDown, LogOut, Settings } from 'lucide-react';
 import { cn } from '../utils/helpers';
 
 interface HeaderProps {
@@ -8,7 +10,9 @@ interface HeaderProps {
 }
 
 export function Header({ isSidebarCollapsed, onMenuClick }: HeaderProps) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
     <header
@@ -38,13 +42,33 @@ export function Header({ isSidebarCollapsed, onMenuClick }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="relative p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors">
-            <Bell className="h-6 w-6" />
-            <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full" />
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="relative p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              aria-label="Notifications"
+            >
+              <Bell className="h-6 w-6" />
+              <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full" />
+            </button>
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                <div className="px-4 py-2 border-b border-gray-200">
+                  <h4 className="font-medium text-gray-900">Notifications</h4>
+                </div>
+                <div className="py-2">
+                  <p className="px-4 py-3 text-sm text-gray-500 text-center">No notifications</p>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="relative">
-            <button className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label="User menu"
+            >
               <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
                 <User className="h-5 w-5 text-primary-600" />
               </div>
@@ -53,6 +77,26 @@ export function Header({ isSidebarCollapsed, onMenuClick }: HeaderProps) {
               </span>
               <ChevronDown className="h-4 w-4 text-gray-400 hidden md:block" />
             </button>
+            {showUserMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50">
+                <NavLink
+                  to="/settings"
+                  onClick={() => setShowUserMenu(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <Settings className="h-4 w-4" />
+                  Settings
+                </NavLink>
+                <hr className="my-1 border-gray-200" />
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

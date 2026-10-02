@@ -2,12 +2,18 @@ import { useAuth } from '../context/AuthContext';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { User, Bell, Shield, Palette, Moon, Sun, Key } from 'lucide-react';
+import { User, Bell, Shield, Palette, Moon, Sun, Key, Check } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export function SettingsPage() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'security' | 'appearance'>('profile');
+  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
+  const [density, setDensity] = useState<'Comfortable' | 'Compact' | 'Spacious'>('Comfortable');
+  const [emailNotifications, setEmailNotifications] = useState(true);
+  const [lowStockAlerts, setLowStockAlerts] = useState(true);
+  const [orderUpdates, setOrderUpdates] = useState(true);
 
   return (
     <div className="space-y-6">
@@ -86,7 +92,12 @@ export function SettingsPage() {
                         <p className="text-sm text-gray-500">Receive email updates about orders and inventory</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <input
+                          type="checkbox"
+                          checked={emailNotifications}
+                          onChange={(e) => setEmailNotifications(e.target.checked)}
+                          className="sr-only peer"
+                        />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
                       </label>
                     </div>
@@ -96,7 +107,12 @@ export function SettingsPage() {
                         <p className="text-sm text-gray-500">Get notified when products fall below safety stock</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <input
+                          type="checkbox"
+                          checked={lowStockAlerts}
+                          onChange={(e) => setLowStockAlerts(e.target.checked)}
+                          className="sr-only peer"
+                        />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
                       </label>
                     </div>
@@ -106,7 +122,12 @@ export function SettingsPage() {
                         <p className="text-sm text-gray-500">Notifications for order status changes</p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <input
+                          type="checkbox"
+                          checked={orderUpdates}
+                          onChange={(e) => setOrderUpdates(e.target.checked)}
+                          className="sr-only peer"
+                        />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
                       </label>
                     </div>
@@ -132,12 +153,14 @@ export function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
                       <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500" placeholder="••••••••" />
                     </div>
-                    <Button>Update Password</Button>
+                    <Button onClick={() => toast.success('Password updated (demo)')}>Update Password</Button>
                   </form>
                   <div className="mt-8 pt-6 border-t border-gray-200">
                     <h4 className="font-medium text-gray-900 mb-4">Two-Factor Authentication</h4>
                     <p className="text-sm text-gray-500 mb-4">Add an extra layer of security to your account.</p>
-                    <Button variant="outline"><Key className="h-4 w-4 mr-2" /> Enable 2FA</Button>
+                    <Button variant="outline" onClick={() => toast.success('2FA setup initiated (demo)')}>
+                      <Key className="h-4 w-4 mr-2" /> Enable 2FA
+                    </Button>
                   </div>
                 </CardContent>
               </>
@@ -152,16 +175,26 @@ export function SettingsPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-3">Theme</label>
                       <div className="grid grid-cols-3 gap-3">
                         {[
-                          { id: 'light', label: 'Light', icon: Sun },
-                          { id: 'dark', label: 'Dark', icon: Moon },
-                          { id: 'system', label: 'System', icon: Palette },
-                        ].map((theme) => (
+                          { id: 'light' as const, label: 'Light', icon: Sun },
+                          { id: 'dark' as const, label: 'Dark', icon: Moon },
+                          { id: 'system' as const, label: 'System', icon: Palette },
+                        ].map((t) => (
                           <button
-                            key={theme.id}
-                            className="relative p-4 border-2 rounded-lg text-center hover:border-primary-300 transition-colors"
+                            key={t.id}
+                            onClick={() => { setTheme(t.id); toast.success(`Theme set to ${t.label} (demo)`); }}
+                            className={`relative p-4 border-2 rounded-lg text-center transition-colors ${
+                              theme === t.id
+                                ? 'border-primary-600 bg-primary-50'
+                                : 'hover:border-primary-300'
+                            }`}
                           >
-                            <theme.icon className="h-6 w-6 mx-auto mb-2 text-gray-600" />
-                            <p className="text-sm font-medium">{theme.label}</p>
+                            <t.icon className="h-6 w-6 mx-auto mb-2 text-gray-600" />
+                            <p className="text-sm font-medium">{t.label}</p>
+                            {theme === t.id && (
+                              <div className="absolute top-2 right-2 bg-primary-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                                <Check className="h-3 w-3" />
+                              </div>
+                            )}
                           </button>
                         ))}
                       </div>
@@ -169,9 +202,22 @@ export function SettingsPage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-3">Density</label>
                       <div className="grid grid-cols-3 gap-3">
-                        {['Comfortable', 'Compact', 'Spacious'].map((density) => (
-                          <button key={density} className="relative p-4 border-2 rounded-lg text-center hover:border-primary-300 transition-colors">
-                            <p className="text-sm font-medium">{density}</p>
+                        {(['Comfortable', 'Compact', 'Spacious'] as const).map((d) => (
+                          <button
+                            key={d}
+                            onClick={() => { setDensity(d); toast.success(`Density set to ${d} (demo)`); }}
+                            className={`relative p-4 border-2 rounded-lg text-center transition-colors ${
+                              density === d
+                                ? 'border-primary-600 bg-primary-50'
+                                : 'hover:border-primary-300'
+                            }`}
+                          >
+                            <p className="text-sm font-medium">{d}</p>
+                            {density === d && (
+                              <div className="absolute top-2 right-2 bg-primary-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                                <Check className="h-3 w-3" />
+                              </div>
+                            )}
                           </button>
                         ))}
                       </div>

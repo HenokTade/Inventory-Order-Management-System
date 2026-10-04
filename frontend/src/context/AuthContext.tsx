@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { api } from '../api/client';
 import { useMe } from '../api/hooks';
 import type { User } from '../types';
@@ -17,19 +18,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(true);
 
-  const isAuthenticated = api.isAuthenticated();
-  const { data: user, isLoading: meLoading, error, refetch } = useMe(isAuthenticated);
+  const hasToken = api.isAuthenticated();
+  const { data: user, isLoading: meLoading, error, refetch } = useMe(hasToken);
 
   useEffect(() => {
     api.setAuthFailureHandler(() => {
+      queryClient.clear();
       navigate('/login', { replace: true });
     });
-  }, [navigate]);
+  }, [navigate, queryClient]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!hasToken) {
       setIsLoading(false);
       return;
     }
@@ -37,14 +40,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!meLoading) {
       setIsLoading(false);
     }
-  }, [isAuthenticated, meLoading]);
+  }, [hasToken, meLoading]);
 
   useEffect(() => {
-    if (error && isAuthenticated) {
+    if (error && hasToken) {
       api.logout();
+      queryClient.clear();
       navigate('/login', { replace: true });
     }
-  }, [error, isAuthenticated, navigate]);
+  }, [error, hasToken, navigate, queryClient]);
 
   const login = async (email: string, password: string) => {
     await api.login({ email, password });
@@ -55,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     api.logout();
+    queryClient.clear();
     navigate('/login', { replace: true });
   };
 
@@ -66,8 +71,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }
 
+  const isFullyAuthenticated = hasToken && !!user;
+
   return (
-    <AuthContext.Provider value={{ user: user ?? null, isLoading, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user: isFullyAuthenticated ? user : null,
+        isLoading,
+        isAuthenticated: isFullyAuthenticated,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

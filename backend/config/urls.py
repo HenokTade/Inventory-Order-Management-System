@@ -3,8 +3,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.core.views import serve_media
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("media/<path:file_path>", serve_media, name="serve-media"),
     path("api/v1/auth/", include("apps.accounts.auth_urls")),
     path("api/v1/", include("apps.accounts.urls")),
     path("api/v1/", include("apps.core.urls")),

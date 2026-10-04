@@ -47,6 +47,9 @@ build/
 # Docker
 docker-compose.override.yml
 
+# Vercel
+.vercel/
+
 # Test
 .coverage
 htmlcov/

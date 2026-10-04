@@ -242,7 +242,7 @@ class ApiClient {
   }
 
   async updateOrderStatus(id: number, status: string) {
-    const response = await this.client.patch(`/orders/${id}/`, { status });
+    const response = await this.client.patch(`/orders/${id}/status/`, { status });
     return response.data;
   }
 
@@ -258,14 +258,14 @@ class ApiClient {
   }
 
   async submitPayment(id: number, data: FormData) {
-    const response = await this.client.post(`/invoices/${id}/submit_payment/`, data, {
+    const response = await this.client.post(`/invoices/${id}/pay/`, data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;
   }
 
   async updateInvoiceStatus(id: number, status: string) {
-    const response = await this.client.patch(`/invoices/${id}/`, { status });
+    const response = await this.client.patch(`/invoices/${id}/status/`, { status });
     return response.data;
   }
 

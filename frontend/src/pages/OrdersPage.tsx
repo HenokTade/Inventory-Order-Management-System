@@ -115,7 +115,7 @@ export function OrdersPage() {
     { key: 'actions', header: 'Actions', render: (item: any) => (
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" onClick={() => setViewingOrder(item)}><Eye className="h-4 w-4" /></Button>
-        {item.allowed_transitions.length > 0 && (
+        {(item.allowed_transitions?.length ?? 0) > 0 && (
           <Button variant="ghost" size="sm" onClick={() => { setUpdatingOrderId(item.id); setNewStatus(item.allowed_transitions[0] as any); }}>
             <ShoppingCart className="h-4 w-4" />
           </Button>
@@ -271,7 +271,7 @@ export function OrdersPage() {
       <Modal
         isOpen={!!viewingOrder}
         onClose={() => setViewingOrder(null)}
-        title={`Order ${viewingOrder?.order_number}`}
+        title={viewingOrder ? `Order ${viewingOrder.order_number}` : 'Order Details'}
         size="lg"
       >
         <div className="space-y-6">
@@ -341,7 +341,7 @@ export function OrdersPage() {
             </div>
           </div>
 
-          {viewingOrder?.allowed_transitions.length > 0 && (
+          {(viewingOrder?.allowed_transitions?.length ?? 0) > 0 && (
             <div className="pt-4 border-t border-gray-200">
               <h4 className="font-medium text-gray-900 mb-3">Update Status</h4>
               <div className="flex flex-wrap gap-2">

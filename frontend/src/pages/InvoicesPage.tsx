@@ -172,7 +172,7 @@ export function InvoicesPage() {
       <Modal
         isOpen={!!viewingInvoice}
         onClose={() => setViewingInvoice(null)}
-        title={`Invoice ${viewingInvoice?.invoice_number}`}
+        title={viewingInvoice ? `Invoice ${viewingInvoice.invoice_number}` : 'Invoice Details'}
         size="lg"
       >
         <div className="space-y-6">
@@ -257,7 +257,7 @@ export function InvoicesPage() {
       <Modal
         isOpen={!!payingInvoice}
         onClose={() => { setPayingInvoice(null); reset(); }}
-        title={`Submit Payment: ${payingInvoice?.invoice_number}`}
+        title={payingInvoice ? `Submit Payment: ${payingInvoice.invoice_number}` : 'Submit Payment'}
         size="md"
       >
         <form onSubmit={handleSubmit(onSubmitPayment)} className="space-y-4">

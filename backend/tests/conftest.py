@@ -8,21 +8,25 @@ from apps.accounts.models import Organization, User
 @pytest.fixture(autouse=True)
 def media_tmpdir(tmp_path, settings):
     settings.MEDIA_ROOT = str(tmp_path / "media")
-    settings.DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    settings.STORAGES = {
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    }
 
 
 @pytest.fixture(autouse=True)
-def eager_celery():
+def eager_celery(settings):
     """Run Celery tasks inline so async workflows are deterministic in tests."""
     from config.celery import app
 
-    previous_eager = app.conf.task_always_eager
-    previous_propagates = app.conf.task_eager_propagates
-    app.conf.task_always_eager = True
-    app.conf.task_eager_propagates = True
+    previous_conf = app._conf
+    settings.CELERY_TASK_ALWAYS_EAGER = True
+    settings.CELERY_TASK_EAGER_PROPAGATES = True
+    # Celery snapshots Django settings on first config access, so drop the cache
+    # to make the eager overrides above actually take effect.
+    app._conf = None
     yield
-    app.conf.task_always_eager = previous_eager
-    app.conf.task_eager_propagates = previous_propagates
+    app._conf = previous_conf
 
 
 @pytest.fixture

@@ -118,7 +118,7 @@ export function DashboardPage() {
                 <p className="text-gray-500 text-center py-8">No orders yet</p>
               ) : (
                 recentOrders.map((order: any) => (
-                  <div key={order.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                  <div key={order.id} className="flex flex-wrap items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0">
                     <div>
                       <p className="font-medium text-gray-900">{order.order_number}</p>
                       <p className="text-sm text-gray-500">{order.vendor_name} • {formatDate(order.created_at)}</p>
@@ -152,7 +152,7 @@ export function DashboardPage() {
                 <p className="text-gray-500 text-center py-8">All products well stocked!</p>
               ) : (
                 lowStockItems.map((product: any) => (
-                  <div key={product.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                  <div key={product.id} className="flex flex-wrap items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0">
                     <div>
                       <p className="font-medium text-gray-900">{product.name}</p>
                       <p className="text-sm text-gray-500">SKU: {product.sku_code}</p>
@@ -182,7 +182,7 @@ export function DashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {invoicesData?.results.slice(0, 5).map((invoice: any) => (
-                <div key={invoice.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                <div key={invoice.id} className="flex flex-wrap items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0">
                   <div>
                     <p className="font-medium text-gray-900">{invoice.invoice_number}</p>
                     <p className="text-sm text-gray-500">{invoice.vendor_name} • {formatDate(invoice.issue_date)}</p>
@@ -214,7 +214,7 @@ export function DashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {restocksData?.results.filter((r: any) => r.status === 'DRAFT' || r.status === 'SENT').slice(0, 5).map((restock: any) => (
-                <div key={restock.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                <div key={restock.id} className="flex flex-wrap items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0">
                   <div>
                     <p className="font-medium text-gray-900">{restock.product_name}</p>
                     <p className="text-sm text-gray-500">SKU: {restock.product_sku} • Qty: {restock.quantity}</p>

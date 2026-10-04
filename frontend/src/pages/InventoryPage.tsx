@@ -261,7 +261,7 @@ export function InventoryPage() {
       </div>
 
       <div className="border-b border-gray-200">
-        <nav className="flex gap-4" aria-label="Inventory tabs">
+        <nav className="flex gap-2 sm:gap-4 overflow-x-auto" aria-label="Inventory tabs">
           <button
             onClick={() => setActiveTab('products')}
             className={cn('px-4 py-2 text-sm font-medium border-b-2 transition-colors', activeTab === 'products' ? 'border-primary-600 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700')}
@@ -289,7 +289,7 @@ export function InventoryPage() {
       {activeTab === 'products' && (
         <Card>
           <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
@@ -297,7 +297,7 @@ export function InventoryPage() {
                   placeholder="Search products..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                  className="w-full sm:w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                 />
               </div>
               <Select
@@ -309,7 +309,7 @@ export function InventoryPage() {
                   { value: 'inactive', label: 'Inactive' },
                   { value: 'low_stock', label: 'Low Stock' },
                 ]}
-                className="w-40"
+                className="w-full sm:w-40"
               />
             </div>
           </CardHeader>
@@ -418,7 +418,7 @@ export function InventoryPage() {
             <p className="text-sm text-gray-600">Current Stock: <span className="font-medium text-gray-900">{adjustingProduct?.stock_qty}</span></p>
             <p className="text-sm text-gray-600">Safety Stock: <span className="font-medium text-gray-900">{adjustingProduct?.safety_stock}</span></p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input label="Change Qty (use - for decrease)" type="number" {...registerStock('change_qty', { valueAsNumber: true })} error={stockErrors.change_qty?.message} />
             <Input label="Or Set New Quantity" type="number" min="0" {...registerStock('new_quantity', { valueAsNumber: true })} error={stockErrors.new_quantity?.message} />
           </div>

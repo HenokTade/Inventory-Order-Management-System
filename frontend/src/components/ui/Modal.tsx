@@ -59,7 +59,7 @@ export function Modal({
           onClick={closeOnOverlayClick ? onClose : undefined}
         />
         <div className={cn('relative w-full bg-white rounded-xl shadow-xl transform transition-all', sizes[size])}>
-          <div className="flex items-start justify-between p-6 border-b border-gray-200">
+          <div className="flex items-start justify-between p-4 sm:p-6 border-b border-gray-200">
             <div>
               <h2 id="modal-title" className="text-lg font-semibold text-gray-900">
                 {title}
@@ -76,9 +76,9 @@ export function Modal({
               <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="p-6">{children}</div>
+          <div className="p-4 sm:p-6">{children}</div>
           {footer && (
-            <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+            <div className="px-4 sm:px-6 py-4 border-t border-gray-200 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
               {footer}
             </div>
           )}
@@ -114,7 +114,7 @@ export function ConfirmModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm">
       <p className="text-gray-600">{message}</p>
-      <div className="flex justify-end gap-3 mt-6">
+      <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6">
         <Button variant="outline" onClick={onClose} disabled={isLoading}>
           {cancelText}
         </Button>

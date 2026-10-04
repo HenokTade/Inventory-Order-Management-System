@@ -132,7 +132,7 @@ export function InvoicesPage() {
 
       <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
@@ -140,14 +140,14 @@ export function InvoicesPage() {
                 placeholder="Search invoices..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                className="w-full sm:w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
               />
             </div>
             <Select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               options={statusOptions}
-              className="w-40"
+              className="w-full sm:w-40"
             />
           </div>
         </CardHeader>
@@ -176,7 +176,7 @@ export function InvoicesPage() {
         size="lg"
       >
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-gray-500">Invoice Number</p>
               <p className="font-medium">{viewingInvoice?.invoice_number}</p>

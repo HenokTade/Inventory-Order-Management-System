@@ -11,12 +11,15 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  X,
 } from 'lucide-react';
 import { cn } from '../utils/helpers';
 
 interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
+  mobileOpen: boolean;
+  onMobileClose: () => void;
 }
 
 const navigation = [
@@ -28,7 +31,7 @@ const navigation = [
   { name: 'Organizations', href: '/organizations', icon: Building2, roles: ['SUPER_ADMIN'] },
 ];
 
-export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+export function Sidebar({ isCollapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {
   const { user, logout } = useAuth();
   const location = useLocation();
 
@@ -40,25 +43,31 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-40 h-screen bg-white border-r border-gray-200 transition-all duration-300 flex flex-col',
-        isCollapsed ? 'w-16' : 'w-64'
+        'fixed left-0 top-0 z-50 h-screen w-64 bg-white border-r border-gray-200 transition-all duration-300 flex flex-col',
+        isCollapsed && 'lg:w-16',
+        mobileOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full lg:translate-x-0'
       )}
     >
       <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
-        {!isCollapsed && (
-          <NavLink to="/" className="font-bold text-xl text-primary-600">
-            Inventory
-          </NavLink>
-        )}
+        <NavLink to="/" onClick={onMobileClose} className={cn('font-bold text-xl text-primary-600', isCollapsed && 'lg:hidden')}>
+          Inventory
+        </NavLink>
         <button
           onClick={onToggle}
           className={cn(
-            'p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors',
+            'hidden lg:flex p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors',
             isCollapsed && 'mx-auto'
           )}
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {isCollapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+        </button>
+        <button
+          onClick={onMobileClose}
+          className="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+          aria-label="Close menu"
+        >
+          <X className="h-5 w-5" />
         </button>
       </div>
 
@@ -69,17 +78,18 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             <NavLink
               key={item.name}
               to={item.href}
+              onClick={onMobileClose}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                 isActive
                   ? 'bg-primary-50 text-primary-700'
                   : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
-                isCollapsed && 'justify-center'
+                isCollapsed && 'lg:justify-center'
               )}
               title={isCollapsed ? item.name : undefined}
             >
               <item.icon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-              {!isCollapsed && <span>{item.name}</span>}
+              <span className={cn(isCollapsed && 'lg:hidden')}>{item.name}</span>
             </NavLink>
           );
         })}
@@ -88,30 +98,31 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
       <div className="p-3 border-t border-gray-200">
         <NavLink
           to="/settings"
+          onClick={onMobileClose}
           className={cn(
             'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors',
-            isCollapsed && 'justify-center'
+            isCollapsed && 'lg:justify-center'
           )}
           title={isCollapsed ? 'Settings' : undefined}
         >
           <Settings className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-          {!isCollapsed && <span>Settings</span>}
+          <span className={cn(isCollapsed && 'lg:hidden')}>Settings</span>
         </NavLink>
 
         <button
           onClick={logout}
           className={cn(
             'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors mt-2',
-            isCollapsed && 'justify-center'
+            isCollapsed && 'lg:justify-center'
           )}
           title={isCollapsed ? 'Logout' : undefined}
         >
           <LogOut className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-          {!isCollapsed && <span>Logout</span>}
+          <span className={cn(isCollapsed && 'lg:hidden')}>Logout</span>
         </button>
 
-        {!isCollapsed && user && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
+        {user && (
+          <div className={cn('mt-4 pt-4 border-t border-gray-200', isCollapsed && 'lg:hidden')}>
             <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Signed in as</p>
             <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
             <p className="text-xs text-gray-500 capitalize">{user.role.replace('_', ' ').toLowerCase()}</p>

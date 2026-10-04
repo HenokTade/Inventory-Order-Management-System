@@ -41,11 +41,11 @@ export function Table<T>({
   if (isLoading) {
     return (
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full min-w-[640px]">
           <thead>
             <tr className="border-b border-gray-200">
               {columns.map((column) => (
-                <th key={column.key} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th key={column.key} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
                   {column.header}
                 </th>
               ))}
@@ -77,14 +77,14 @@ export function Table<T>({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full">
+      <table className="w-full min-w-[640px]">
         <thead>
           <tr className="border-b border-gray-200 bg-gray-50">
             {columns.map((column) => (
               <th
                 key={column.key}
                 className={cn(
-                  'px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
+                  'px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap',
                   column.className
                 )}
                 style={{ width: column.width }}
@@ -162,11 +162,11 @@ export function Pagination({
   );
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+    <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-gray-200">
       <div className="text-sm text-gray-700">
         Page {currentPage} of {totalPages}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 ml-auto">
         {showPageSize && pageSize && onPageSizeChange && (
           <select
             value={pageSize}

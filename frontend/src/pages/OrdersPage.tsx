@@ -156,7 +156,7 @@ export function OrdersPage() {
 
       <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
@@ -164,14 +164,14 @@ export function OrdersPage() {
                 placeholder="Search orders..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                className="w-full sm:w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
               />
             </div>
             <Select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               options={statusOptions}
-              className="w-40"
+              className="w-full sm:w-40"
             />
           </div>
         </CardHeader>
@@ -204,7 +204,7 @@ export function OrdersPage() {
             <h3 className="text-lg font-medium text-gray-900 mb-4">Order Items</h3>
             <div className="space-y-3">
               {fields.map((field, index) => (
-                <div key={field.id} className="flex items-center gap-3">
+                <div key={field.id} className="flex flex-wrap items-center gap-3">
                   <Select
                     {...register(`items.${index}.product_id`, { valueAsNumber: true })}
                     options={availableProducts.map(p => ({ value: String(p.id), label: `${p.sku_code} - ${p.name} (${formatCurrency(p.unit_price)})` }))}
@@ -275,7 +275,7 @@ export function OrdersPage() {
         size="lg"
       >
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-gray-500">Order Number</p>
               <p className="font-medium">{viewingOrder?.order_number}</p>
@@ -330,7 +330,7 @@ export function OrdersPage() {
             <h4 className="font-medium text-gray-900 mb-3">Items</h4>
             <div className="space-y-2">
               {viewingOrder?.items?.map((item: any, index: number) => (
-                <div key={index} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+                <div key={index} className="flex items-center justify-between gap-2 py-2 px-3 bg-gray-50 rounded-lg">
                   <div className="flex-1">
                     <p className="font-medium">{item.product_name} ({item.product_sku})</p>
                     <p className="text-sm text-gray-500">Qty: {item.quantity} × {formatCurrency(item.price_at_purchase)}</p>

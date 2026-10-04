@@ -37,11 +37,13 @@ export function Badge({ children, variant = 'default', size = 'md', className }:
 }
 
 interface StatusBadgeProps {
-  status: string;
+  status?: string | null;
   size?: 'sm' | 'md';
 }
 
 export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
+  if (!status) return <Badge variant="default" size={size}>N/A</Badge>;
+
   const statusVariants: Record<string, BadgeProps['variant']> = {
     // Order statuses
     PENDING: 'warning',
@@ -68,5 +70,5 @@ export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
     DISTRIBUTOR: 'info',
   };
 
-  return <Badge variant={statusVariants[status] || 'default'} size={size}>{status.replace('_', ' ')}</Badge>;
+  return <Badge variant={statusVariants[status] || 'default'} size={size}>{status.replace(/_/g, ' ')}</Badge>;
 }

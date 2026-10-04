@@ -5,8 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(amount: string | number): string {
+export function formatCurrency(amount: string | number | null | undefined): string {
+  if (amount === null || amount === undefined || amount === '') return '$0.00';
   const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+  if (isNaN(num)) return '$0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -14,8 +16,10 @@ export function formatCurrency(amount: string | number): string {
   }).format(num);
 }
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string | null | undefined): string {
+  if (!dateString) return 'N/A';
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'N/A';
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',
@@ -23,8 +27,10 @@ export function formatDate(dateString: string): string {
   }).format(date);
 }
 
-export function formatDateTime(dateString: string): string {
+export function formatDateTime(dateString: string | null | undefined): string {
+  if (!dateString) return 'N/A';
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'N/A';
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'short',

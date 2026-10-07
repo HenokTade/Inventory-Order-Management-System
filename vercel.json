@@ -1,49 +1,41 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "backend": {
-      "root": "backend/",
-      "framework": "django",
-      "buildCommand": "python build.py"
-    },
-    "frontend": {
-      "root": "frontend/",
-      "framework": "vite",
-      "buildCommand": "npm run build",
-      "rewrites": [
-        {
-          "source": "/(.*)",
-          "destination": "/index.html"
-        }
-      ]
-    }
-  },
-  "crons": [
+  "version": 2,
+  "builds": [
     {
-      "path": "/api/v1/cron/run/",
-      "schedule": "0 0 * * *"
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": { "service": "backend" }
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
     },
     {
-      "source": "/admin/(.*)",
-      "destination": { "service": "backend" }
+      "src": "/admin/(.*)",
+      "dest": "/api/index.py"
     },
     {
-      "source": "/media/(.*)",
-      "destination": { "service": "backend" }
+      "src": "/media/(.*)",
+      "dest": "/api/index.py"
     },
     {
-      "source": "/static/(.*)",
-      "destination": { "service": "backend" }
+      "src": "/static/(.*)",
+      "dest": "/api/index.py"
     },
     {
-      "source": "/(.*)",
-      "destination": { "service": "frontend" }
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
     }
   ]
 }

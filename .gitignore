@@ -60,3 +60,4 @@ htmlcov/
 *.pem
 *.key
 *.crt
+.aider*

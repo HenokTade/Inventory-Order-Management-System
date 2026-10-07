@@ -108,6 +108,282 @@
   .animation-delay-300 {
     animation-delay: 300ms;
   }
+
+  /* Animation classes */
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .fade-in-delay-100 {
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+
+  .fade-in-delay-200 {
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: 200ms;
+  }
+
+  .fade-in-delay-300 {
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: 300ms;
+  }
+
+  .slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .slide-up-delay-100 {
+    animation: slideUp 0.5s ease-out forwards;
+    animation-delay: 100ms;
+  }
+
+  .slide-up-delay-200 {
+    animation: slideUp 0.5s ease-out forwards;
+    animation-delay: 200ms;
+  }
+
+  .slide-up-delay-300 {
+    animation: slideUp 0.5s ease-out forwards;
+    animation-delay: 300ms;
+  }
+
+  .slide-down {
+    animation: slideDown 0.5s ease-out forwards;
+  }
+
+  .slide-left {
+    animation: slideLeft 0.5s ease-out forwards;
+  }
+
+  .slide-right {
+    animation: slideRight 0.5s ease-out forwards;
+  }
+
+  .pulse-slow {
+    animation: pulseSlow 3s ease-in-out infinite;
+  }
+
+  .pulse {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .hover-lift-lg {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift-lg:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 20px 20px -10px rgba(0, 0, 0, 0.05);
+  }
+
+  .scale-in {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+
+  .scale-in-delay-100 {
+    animation: scaleIn 0.4s ease-out forwards;
+    animation-delay: 100ms;
+  }
+
+  .scale-in-delay-200 {
+    animation: scaleIn 0.4s ease-out forwards;
+    animation-delay: 200ms;
+  }
+
+  .rotate-in {
+    animation: rotateIn 0.5s ease-out forwards;
+  }
+
+  .flip-in {
+    animation: flipIn 0.6s ease-out forwards;
+  }
+
+  /* Button animations */
+  .btn-animate {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-animate::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  .btn-animate:hover::after {
+    width: 300px;
+    height: 300px;
+    opacity: 1;
+  }
+
+  /* Loading skeleton animation */
+  @keyframes pulse-loading {
+    0% {
+      background-color: hsl(200, 20%, 85%);
+    }
+    50% {
+      background-color: hsl(200, 20%, 95%);
+    }
+    100% {
+      background-color: hsl(200, 20%, 85%);
+    }
+  }
+
+  .animate-pulse-loading {
+    animation: pulse-loading 1.5s ease-in-out infinite;
+  }
+
+  /* Shine effect for buttons and cards */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: rotate(30deg);
+    transition: transform 0.6s ease;
+  }
+
+  .shine:hover::after {
+    transform: rotate(30deg) translate(100%, 100%);
+  }
+
+  /* New keyframes */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideRight {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulseSlow {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes rotateIn {
+    from {
+      opacity: 0;
+      transform: rotate(-10deg) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(0) translateY(0);
+    }
+  }
+
+  @keyframes flipIn {
+    from {
+      opacity: 0;
+      transform: perspective(400px) rotateX(90deg);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(400px) rotateX(0deg);
+    }
+  }
 }
 
 /* Custom styles for react-hot-toast */
